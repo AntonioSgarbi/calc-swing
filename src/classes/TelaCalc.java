@@ -1,17 +1,28 @@
-
 package classes;
 
-import static java.lang.Math.pow;
+import java.awt.Toolkit;
+import java.awt.datatransfer.Clipboard;
+import java.awt.datatransfer.ClipboardOwner;
+import java.awt.datatransfer.StringSelection;
+import java.awt.datatransfer.Transferable;
+import static java.lang.Math.*;
 
 /**
  * @author anton_000
  */
 public class TelaCalc extends javax.swing.JFrame {
+
+    static int function;
+    static long valor1;
+    static long valor2;
+    static boolean inserido;
+
     public TelaCalc() {
+
         initComponents();
+
     }
 
-   
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -19,6 +30,8 @@ public class TelaCalc extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         txtIn1 = new javax.swing.JTextField();
         txtIn2 = new javax.swing.JTextField();
+        btnInsert1 = new javax.swing.JButton();
+        btnInsert2 = new javax.swing.JButton();
         btnLimp1 = new javax.swing.JButton();
         btnLimp2 = new javax.swing.JButton();
         txtRes = new javax.swing.JTextArea();
@@ -36,10 +49,9 @@ public class TelaCalc extends javax.swing.JFrame {
         lblCalc = new javax.swing.JLabel();
         lblSeg = new javax.swing.JLabel();
         btnRes = new javax.swing.JButton();
-        btnInsert1 = new javax.swing.JButton();
-        btnInsert2 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setResizable(false);
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -72,6 +84,20 @@ public class TelaCalc extends javax.swing.JFrame {
             }
         });
 
+        btnInsert1.setText("Inserir");
+        btnInsert1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnInsert1ActionPerformed(evt);
+            }
+        });
+
+        btnInsert2.setText("Inserir");
+        btnInsert2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnInsert2ActionPerformed(evt);
+            }
+        });
+
         btnLimp1.setText("Limpar");
         btnLimp1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -91,9 +117,19 @@ public class TelaCalc extends javax.swing.JFrame {
         txtRes.setRows(5);
         txtRes.setText("Resultado");
 
-        btnCut.setText("copiar");
+        btnCut.setText("cortar");
+        btnCut.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCutActionPerformed(evt);
+            }
+        });
 
         btnCop.setText("copiar");
+        btnCop.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCopActionPerformed(evt);
+            }
+        });
 
         btnClean.setText("limpar");
         btnClean.addActionListener(new java.awt.event.ActionListener() {
@@ -230,20 +266,6 @@ public class TelaCalc extends javax.swing.JFrame {
                 .addComponent(btnRes, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
-        btnInsert1.setText("Inserir");
-        btnInsert1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnInsert1ActionPerformed(evt);
-            }
-        });
-
-        btnInsert2.setText("Inserir");
-        btnInsert2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnInsert2ActionPerformed(evt);
-            }
-        });
-
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -324,64 +346,44 @@ public class TelaCalc extends javax.swing.JFrame {
     }//GEN-LAST:event_txtIn2ActionPerformed
 
     private void btnSomaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSomaActionPerformed
-        double soma1;
-        double soma2;
-        double somaRes;
-        
+
         lblCalc.setText("+");
-        soma1 = Double.parseDouble(txtIn1.getText());
-        soma2 = Double.parseDouble(txtIn2.getText());
-        somaRes = soma1+soma2;
-        txtRes.setText(Double.toString(somaRes));
-        
+        TelaCalc.function = 1;
+        TelaCalc.inserido = true;
+        //TelaCalc.resultado = addExact(TelaCalc.valor1, TelaCalc.valor2);                 
+
     }//GEN-LAST:event_btnSomaActionPerformed
 
     private void btnSubActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSubActionPerformed
-        double sub1;
-        double sub2;
-        double subRes;
-        
+
         lblCalc.setText("-");
-        sub1 = Double.parseDouble(txtIn1.getText());
-        sub2 = Double.parseDouble(txtIn2.getText());
-        subRes = sub1-sub2;
-        txtRes.setText(Double.toString(subRes));
+        TelaCalc.function = 2;
+        TelaCalc.inserido = true;
+
     }//GEN-LAST:event_btnSubActionPerformed
 
     private void btnMultActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMultActionPerformed
-        double mut1;
-        double mut2;
-        double mutRes;
-        
+
         lblCalc.setText("*");
-        mut1 = Double.parseDouble(txtIn1.getText());
-        mut2 = Double.parseDouble(txtIn2.getText());
-        mutRes = mut1*mut2;
-        txtRes.setText(Double.toString(mutRes));
+        TelaCalc.function = 3;
+        TelaCalc.inserido = true;
+
     }//GEN-LAST:event_btnMultActionPerformed
 
     private void btnDivActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDivActionPerformed
-        double div1;
-        double div2;
-        double divRes;
-        
+
         lblCalc.setText("/");
-        div1 = Double.parseDouble(txtIn1.getText());
-        div2 = Double.parseDouble(txtIn2.getText());
-        divRes = div1/div2;
-        txtRes.setText(Double.toString(divRes));
+        TelaCalc.function = 4;
+        TelaCalc.inserido = true;
+
     }//GEN-LAST:event_btnDivActionPerformed
 
     private void btnPotActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPotActionPerformed
-       double exp1;
-       double exp2;
-       double expRes;
-       
-       lblCalc.setText("Exp");
-       exp1 = Double.parseDouble(txtIn1.getText());
-       exp2 = Double.parseDouble(txtIn2.getText());
-       expRes = pow(exp1, exp2);
-       txtRes.setText(Double.toString(expRes));
+
+        lblCalc.setText("Exp");
+        TelaCalc.function = 5;
+        TelaCalc.inserido = true;
+
     }//GEN-LAST:event_btnPotActionPerformed
 
     private void txtIn1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_txtIn1MouseClicked
@@ -393,35 +395,89 @@ public class TelaCalc extends javax.swing.JFrame {
     }//GEN-LAST:event_txtIn2MouseClicked
 
     private void btnCleanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCleanActionPerformed
+        txtIn1.setText("Primeiro Valor");
+        txtIn2.setText("Segundo Valor");
+        lblPrim.setText("Primeiro Valor");
+        lblSeg.setText("Segundo Valor");
+        lblCalc.setText("Ação");
         txtRes.setText("Resultado");
     }//GEN-LAST:event_btnCleanActionPerformed
 
     private void btnInsert1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnInsert1ActionPerformed
         // TODO add your handling code here:
-        String valor1 = txtIn1.getText();
-        
-        lblPrim.setText(valor1);
+        String valor1txt = txtIn1.getText();
+        TelaCalc.valor1 = Long.parseLong(txtIn1.getText());
+
+        lblPrim.setText(valor1txt);
     }//GEN-LAST:event_btnInsert1ActionPerformed
 
     private void btnLimp1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLimp1ActionPerformed
         txtIn1.setText("Primeiro Valor");
         lblPrim.setText("Primeiro Valor");
+        TelaCalc.valor1 = 0;
     }//GEN-LAST:event_btnLimp1ActionPerformed
 
     private void btnLimp2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLimp2ActionPerformed
         txtIn2.setText("Segundo Valor");
         lblSeg.setText("Segundo Valor");
+        TelaCalc.valor1 = 0;
     }//GEN-LAST:event_btnLimp2ActionPerformed
 
     private void btnInsert2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnInsert2ActionPerformed
         String valor2 = txtIn2.getText();
-        
+        TelaCalc.valor2 = Long.parseLong(txtIn2.getText());
         lblSeg.setText(valor2);
     }//GEN-LAST:event_btnInsert2ActionPerformed
 
     private void btnResActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnResActionPerformed
-        
+
+        if (TelaCalc.valor1 == 0 || TelaCalc.valor2 == 0) {
+            txtRes.setText("Insira os valores");
+        } else {
+
+            switch (TelaCalc.function) {
+
+                case 0:
+                    txtRes.setText("Selecione a operação");
+                    break;
+                case 1:
+                    long resultado1 = addExact(TelaCalc.valor1, TelaCalc.valor2);
+                    txtRes.setText("Soma: " + Long.toString(resultado1));
+                    break;
+                case 2:
+                    long resultado2 = subtractExact(TelaCalc.valor1, TelaCalc.valor2);
+                    txtRes.setText("Subtração: " + Long.toString(resultado2));
+                    break;
+                case 3:
+                    long resultado3 = multiplyExact(TelaCalc.valor1, TelaCalc.valor2);
+                    txtRes.setText("Produto: " + Long.toString(resultado3));
+                    break;
+                case 4:
+                    long resultado4 = floorDiv(TelaCalc.valor1, TelaCalc.valor2);
+                    double resultado6 = valor1 % valor2;
+                    txtRes.setText("Quociente: " + Long.toString(resultado4) + "\n"
+                            + "Resto: " + Double.toString(resultado6));
+                    break;
+                case 5:
+                    double resultado5 = pow(TelaCalc.valor1, TelaCalc.valor2);
+                    txtRes.setText("Potenciação" + Double.toString(resultado5));
+                    break;
+            }
+        }
     }//GEN-LAST:event_btnResActionPerformed
+
+    private void btnCopActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCopActionPerformed
+        Clipboard board = Toolkit.getDefaultToolkit().getSystemClipboard();
+                        ClipboardOwner selecao = new StringSelection(txtRes.getText());
+                        board.setContents((Transferable) selecao, selecao);
+    }//GEN-LAST:event_btnCopActionPerformed
+
+    private void btnCutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCutActionPerformed
+        Clipboard board = Toolkit.getDefaultToolkit().getSystemClipboard();
+                        ClipboardOwner selecao = new StringSelection(txtRes.getText());
+                        board.setContents((Transferable) selecao, selecao);
+        txtRes.setText("Resultado");
+    }//GEN-LAST:event_btnCutActionPerformed
 
     /**
      * @param args the command line arguments
@@ -463,7 +519,7 @@ public class TelaCalc extends javax.swing.JFrame {
     private javax.swing.JButton btnCop;
     private javax.swing.JButton btnCut;
     private javax.swing.JButton btnDiv;
-    private javax.swing.JButton btnInsert1;
+    public javax.swing.JButton btnInsert1;
     private javax.swing.JButton btnInsert2;
     private javax.swing.JButton btnLimp1;
     private javax.swing.JButton btnLimp2;
